@@ -21,3 +21,8 @@ synthetic_*.csv
 # Node (website)
 website/node_modules/
 website/dist/
+
+# Rust
+hogan-rs/target/
+hogan-rs/.hogan-rs/
+hogan-rs/rust_synthetic.csv

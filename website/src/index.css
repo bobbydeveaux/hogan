@@ -588,6 +588,125 @@ footer {
 .footer-links a:hover { color: var(--bright); }
 .footer-copy { color: var(--muted); font-size: 0.8rem; }
 
+/* ── v2 Highlights ── */
+.v2-highlights {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+
+.v2-card {
+  background: linear-gradient(135deg, rgba(168,85,247,0.06), rgba(6,182,212,0.06));
+  border: 1px solid rgba(168,85,247,0.2);
+  border-radius: 14px;
+  padding: 2rem;
+  transition: all 0.3s;
+}
+.v2-card:hover {
+  border-color: rgba(168,85,247,0.4);
+  box-shadow: 0 8px 32px rgba(168,85,247,0.1);
+  transform: translateY(-2px);
+}
+
+.v2-icon {
+  color: var(--cyan);
+  margin-bottom: 1rem;
+}
+
+.v2-card h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--bright);
+  margin-bottom: 0.5rem;
+}
+.v2-card p { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
+
+/* ── Benchmark bars ── */
+.bench-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.bench-row {
+  display: grid;
+  grid-template-columns: 180px 1fr 60px;
+  gap: 1rem;
+  align-items: center;
+}
+
+.bench-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+  text-align: right;
+}
+
+.bench-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.bench-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.bench-bar {
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  padding: 0 0.75rem;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  min-width: 60px;
+  transition: width 1s ease;
+}
+.bench-bar.python {
+  background: linear-gradient(90deg, rgba(239,68,68,0.3), rgba(239,68,68,0.15));
+  border: 1px solid rgba(239,68,68,0.3);
+  color: var(--red);
+}
+.bench-bar.rust {
+  background: linear-gradient(90deg, rgba(16,185,129,0.3), rgba(16,185,129,0.15));
+  border: 1px solid rgba(16,185,129,0.3);
+  color: var(--green);
+}
+
+.bench-lang {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  min-width: 50px;
+}
+
+.bench-speedup {
+  font-family: var(--mono);
+  font-size: 1.1rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--green), var(--cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-align: center;
+}
+
+/* ── Install grid ── */
+.install-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 1.5rem;
+}
+
+.install-grid .code-block { max-width: none; }
+
 /* ── Responsive ── */
 @media (max-width: 768px) {
   .nav-links { display: none; }

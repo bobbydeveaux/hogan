@@ -1,0 +1,41 @@
+[package]
+name = "hogan"
+version = "0.1.0"
+edition = "2021"
+description = "GAN-based tabular data synthesiser — compiled Rust implementation"
+authors = ["Bobby DeVeaux"]
+
+[dependencies]
+# Deep Learning (PyTorch bindings)
+tch = { version = "0.17", features = ["download-libtorch"] }
+
+# CLI
+clap = { version = "4.6", features = ["derive"] }
+
+# CSV & Data
+csv = "1.4"
+ndarray = { version = "0.16", features = ["serde"] }
+
+# Random & Statistics
+rand = "0.8"
+rand_distr = "0.4"
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+rmp-serde = "1.3"
+
+# Fake data generation
+fake = { version = "3.1", features = ["derive"] }
+
+# Error handling
+anyhow = "1.0"
+
+# Progress & Output
+indicatif = "0.17"
+comfy-table = "7.1"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
