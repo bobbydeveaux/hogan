@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+*.egg
+.venv/
+venv/
+
+# Hogan artifacts
+.hogan/
+synthetic_*.csv
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+
+# Node (website)
+website/node_modules/
+website/dist/

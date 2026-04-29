@@ -1,0 +1,7 @@
+name: hogan
+
+frontend:
+  framework: vite
+  dir: website
+
+database: false

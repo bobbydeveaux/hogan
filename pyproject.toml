@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hogan"
+version = "0.1.0"
+description = "GAN-based tabular data synthesiser"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "Bobby DeVeaux" }]
+dependencies = [
+    "click>=8.1",
+    "ctgan>=0.10",
+    "faker>=24.0",
+    "pandas>=2.0",
+    "scipy>=1.11",
+    "pyyaml>=6.0",
+    "rich>=13.0",
+]
+
+[project.scripts]
+hogan = "hogan.cli.main:cli"
+
+[tool.setuptools.packages.find]
+include = ["hogan*"]

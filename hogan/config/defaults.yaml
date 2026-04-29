@@ -1,0 +1,82 @@
+# Hogan default hyperparameters
+training:
+  epochs: 300
+  batch_size: 500
+  generator_dim: [256, 256]
+  discriminator_dim: [256, 256]
+  generator_lr: 0.0002
+  discriminator_lr: 0.0002
+  discriminator_steps: 1
+  log_frequency: true
+  pac: 10
+
+profiler:
+  # Columns with cardinality below this % of total rows are treated as categorical
+  categorical_threshold: 0.05
+  # Columns matching these patterns (case-insensitive) are treated as name/label
+  name_patterns:
+    - "client"
+    - "account_name"
+    - "investor"
+    - "counterparty"
+    - "issuer_name"
+  # Columns matching these patterns are treated as identifiers
+  id_patterns:
+    - "account_id"
+    - "client_account_id"
+    - "cusip"
+    - "identifier"
+    - "isin"
+    - "sedol"
+  # Known credit rating values
+  rating_values:
+    - "AAA"
+    - "AA+"
+    - "AA"
+    - "AA-"
+    - "A+"
+    - "A"
+    - "A-"
+    - "BBB+"
+    - "BBB"
+    - "BBB-"
+    - "BB+"
+    - "BB"
+    - "BB-"
+    - "B+"
+    - "B"
+    - "B-"
+    - "CCC+"
+    - "CCC"
+    - "CCC-"
+    - "CC"
+    - "C"
+    - "D"
+    - "Aaa"
+    - "Aa1"
+    - "Aa2"
+    - "Aa3"
+    - "A1"
+    - "A2"
+    - "A3"
+    - "Baa1"
+    - "Baa2"
+    - "Baa3"
+    - "Ba1"
+    - "Ba2"
+    - "Ba3"
+    - "B1"
+    - "B2"
+    - "B3"
+    - "Caa1"
+    - "Caa2"
+    - "Caa3"
+    - "Ca"
+    - "NR"
+    - "WD"
+    - "WR"
+
+synthesis:
+  default_rows: null  # null = same as training set
+  seed: null
+  output_format: csv
