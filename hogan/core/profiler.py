@@ -75,18 +75,41 @@ def _detect_string_type(n_unique: int, total_rows: int, threshold: float) -> str
     return "text"
 
 
+def _enrich_numeric(result: dict, series: pd.Series, n_unique: int, total_rows: int, threshold: float) -> None:
+    non_null = series.dropna()
+    result["min"] = float(non_null.min()) if len(non_null) > 0 else None
+    result["max"] = float(non_null.max()) if len(non_null) > 0 else None
+    result["mean"] = float(non_null.mean()) if len(non_null) > 0 else None
+    result["type"] = _detect_numeric_type(series, n_unique, total_rows, threshold)
+    if result["type"] == "categorical":
+        result["categories"] = sorted(non_null.unique().tolist())
+
+
+def _enrich_string(result: dict, series: pd.Series, n_unique: int, total_rows: int, threshold: float) -> None:
+    result["type"] = _detect_string_type(n_unique, total_rows, threshold)
+    if result["type"] == "categorical":
+        result["categories"] = sorted(series.dropna().unique().tolist(), key=str)
+    elif result["type"] in ("identifier", "text"):
+        result["sample_values"] = series.dropna().unique()[:5].tolist()
+
+
+def _base_result(col_name: str, series: pd.Series, total_rows: int) -> dict[str, Any]:
+    n_null = int(series.isna().sum())
+    return {
+        "name": col_name,
+        "n_unique": series.nunique(),
+        "n_null": n_null,
+        "null_pct": round(n_null / total_rows * 100, 1) if total_rows > 0 else 0,
+    }
+
+
 def _detect_column_type(
     col_name: str, series: pd.Series, total_rows: int, config: dict
 ) -> dict[str, Any]:
     profiler_cfg = config["profiler"]
-    n_unique = series.nunique()
-    n_null = int(series.isna().sum())
-    result: dict[str, Any] = {
-        "name": col_name,
-        "n_unique": n_unique,
-        "n_null": n_null,
-        "null_pct": round(n_null / total_rows * 100, 1) if total_rows > 0 else 0,
-    }
+    result = _base_result(col_name, series, total_rows)
+    n_unique = result["n_unique"]
+    threshold = profiler_cfg["categorical_threshold"]
 
     # Pattern-based detection (names, identifiers)
     pattern_type = _detect_by_pattern(col_name, series, config)
@@ -96,40 +119,22 @@ def _detect_column_type(
             result["sample_values"] = series.dropna().unique()[:5].tolist()
         return result
 
-    # Date detection
     if _is_date_column(series):
         result["type"] = "date"
         return result
 
-    # Rating detection
     if _is_rating_column(series, set(profiler_cfg["rating_values"])):
         result["type"] = "rating"
         result["categories"] = sorted(series.dropna().unique().tolist())
         return result
 
-    # Numeric detection
     if pd.api.types.is_numeric_dtype(series):
-        non_null = series.dropna()
-        result["min"] = float(non_null.min()) if len(non_null) > 0 else None
-        result["max"] = float(non_null.max()) if len(non_null) > 0 else None
-        result["mean"] = float(non_null.mean()) if len(non_null) > 0 else None
-        result["type"] = _detect_numeric_type(
-            series, n_unique, total_rows, profiler_cfg["categorical_threshold"]
-        )
-        if result["type"] == "categorical":
-            result["categories"] = sorted(non_null.unique().tolist())
+        _enrich_numeric(result, series, n_unique, total_rows, threshold)
         return result
 
-    # String detection
     is_string = pd.api.types.is_string_dtype(series) or pd.api.types.is_object_dtype(series)
     if is_string:
-        result["type"] = _detect_string_type(
-            n_unique, total_rows, profiler_cfg["categorical_threshold"]
-        )
-        if result["type"] == "categorical":
-            result["categories"] = sorted(series.dropna().unique().tolist(), key=str)
-        elif result["type"] in ("identifier", "text"):
-            result["sample_values"] = series.dropna().unique()[:5].tolist()
+        _enrich_string(result, series, n_unique, total_rows, threshold)
         return result
 
     result["type"] = "categorical"
