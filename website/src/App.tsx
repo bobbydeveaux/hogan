@@ -105,9 +105,9 @@ function App() {
           <div className="nav-inner">
             <span className="nav-logo">hogan</span>
             <div className="nav-links">
+              <a href="#transform">How It Works</a>
               <a href="#v2">v2 Rust</a>
               <a href="#benchmarks">Benchmarks</a>
-              <a href="#transform">How It Works</a>
               <a href="#install">Install</a>
               <a href="https://github.com/bobbydeveaux/hogan" className="btn-github">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
@@ -120,18 +120,19 @@ function App() {
         {/* ── Hero ── */}
         <section className="hero">
           <div className="hero-content">
-            <span className="hero-badge">v2 &mdash; Now in Rust</span>
+            <span className="hero-badge">Synthetic Data Generator</span>
             <h1>
-              <span className="gradient">41x faster.</span><br />
-              Zero compromises.
+              Your data.<br />
+              <span className="gradient">None of the risk.</span>
             </h1>
             <p className="hero-sub">
-              The world&rsquo;s first compiled CTGAN. Hogan v2 rewrites the entire GAN pipeline in Rust,
-              generating 18,594 synthetic rows per second. Single binary. No Python. No runtime.
+              Real client data keeps ending up in demos, dev environments, and git repos.
+              Hogan learns the shape of your dataset and generates new rows that look
+              identical &mdash; but contain zero real names, IDs, or sensitive values.
             </p>
             <div className="hero-actions">
               <a href="#install" className="btn-primary">Get Started</a>
-              <a href="#benchmarks" className="btn-secondary">See Benchmarks</a>
+              <a href="#transform" className="btn-secondary">See How It Works</a>
             </div>
 
             {/* Terminal demo */}
@@ -142,16 +143,80 @@ function App() {
                 <span className="terminal-dot green" />
               </div>
               <div className="terminal-body">
-                <div><span className="prompt">$</span> <span className="cmd">hogan train holdings.csv --epochs 150</span></div>
-                <div><span className="comment"># 10,693 rows, 50 columns | Transform: 0.26s | GMM fit: 0.81s</span></div>
-                <div><span className="success">Training completed in 463s</span></div>
-                <div><span className="success">Model saved to .hogan-rs/model.msgpack</span></div>
+                <div><span className="comment"># Step 1: Train on your real data</span></div>
+                <div><span className="prompt">$</span> <span className="cmd">hogan train holdings.csv</span></div>
+                <div><span className="comment"># Learns distributions, correlations, column types</span></div>
+                <div><span className="success">Model saved</span></div>
                 <br />
+                <div><span className="comment"># Step 2: Generate safe synthetic data</span></div>
                 <div><span className="prompt">$</span> <span className="cmd">hogan synthesise -n 10000 -o synthetic.csv</span></div>
-                <div><span className="success">Generated 10,000 rows in 0.538s</span> <span className="value">(18,594 rows/sec)</span></div>
+                <div><span className="success">Generated 10,000 rows</span> <span className="value">(18,594 rows/sec)</span></div>
                 <br />
-                <div><span className="comment"># Python equivalent: 22.4s</span></div>
-                <div><span className="warn">Rust is 16x faster end-to-end, 41x faster at generation</span></div>
+                <div><span className="comment"># Same columns, same distributions, same schema</span></div>
+                <div><span className="comment"># Zero real client names, zero real account IDs</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Transform visualisation ── */}
+        <section className="morph-section" id="transform">
+          <div className="section">
+            <div className="section-label">The Problem</div>
+            <div className="section-title">Real data in. Synthetic data out.</div>
+            <div className="section-desc">
+              Your CSV has real client names, account IDs, and CUSIPs. Hogan learns the statistical
+              shape &mdash; distributions, correlations, edge cases &mdash; and generates entirely
+              new rows. Same schema, same patterns, zero real values.
+            </div>
+
+            <div className="data-table-demo">
+              <div className="data-panel">
+                <div className="data-panel-header">
+                  <span className="label">Real Data</span>
+                  <span className="tag tag-real">Sensitive</span>
+                </div>
+                <div className="data-rows">
+                  <div className="data-row header">
+                    <span>Client</span><span>Account</span><span>CUSIP</span><span>Value</span>
+                  </div>
+                  {realRows.map((row, i) => (
+                    <div className="data-row" key={i}>
+                      <span className="sensitive">{row[0]}</span>
+                      <span className="sensitive">{row[1]}</span>
+                      <span className="sensitive">{row[2]}</span>
+                      <span>{row[3]}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="transform-arrow">
+                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M8 24h28M28 16l8 8-8 8" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <circle cx="24" cy="24" r="22" stroke="currentColor" strokeWidth="1" opacity="0.3"/>
+                </svg>
+                <span>hogan</span>
+              </div>
+
+              <div className="data-panel">
+                <div className="data-panel-header">
+                  <span className="label">Synthetic Data</span>
+                  <span className="tag tag-synth">Safe</span>
+                </div>
+                <div className="data-rows">
+                  <div className="data-row header">
+                    <span>Client</span><span>Account</span><span>CUSIP</span><span>Value</span>
+                  </div>
+                  {synthRows.map((row, i) => (
+                    <div className="data-row" key={i}>
+                      <span className="safe">{row[0]}</span>
+                      <span className="safe">{row[1]}</span>
+                      <span className="safe">{row[2]}</span>
+                      <span>{row[3]}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -160,12 +225,12 @@ function App() {
         {/* ── v2 Announcement ── */}
         <section className="morph-section" id="v2">
           <div className="section">
-            <div className="section-label">Hogan v2</div>
-            <div className="section-title">They said GANs can&rsquo;t be done in Rust.</div>
+            <div className="section-label">v2 &mdash; Now in Rust</div>
+            <div className="section-title">41x faster. Single binary. No runtime.</div>
             <div className="section-desc">
-              We built the first compiled CTGAN implementation from scratch &mdash; Conditional Tabular GAN
-              with mode-specific normalisation, WGAN-GP training, PacGAN discriminator, and Gumbel-Softmax
-              activation. All in Rust. All from first principles.
+              Hogan v2 rewrites the entire synthesis engine in compiled Rust.
+              Same privacy guarantees, same output &mdash; just dramatically faster.
+              No Python, no pip, no venv. One binary, copy and run.
             </div>
 
             <div className="v2-highlights">
@@ -226,68 +291,6 @@ function App() {
             <div className="stat">
               <div className="stat-value">1</div>
               <div className="stat-label">Binary. That&rsquo;s It.</div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── Transform visualisation ── */}
-        <section className="morph-section" id="transform">
-          <div className="section">
-            <div className="section-label">The Transformation</div>
-            <div className="section-title">Real data in. Synthetic data out.</div>
-            <div className="section-desc">
-              Hogan learns the statistical shape of your dataset&mdash;distributions, correlations,
-              edge cases&mdash;then generates entirely new rows. No real values survive.
-            </div>
-
-            <div className="data-table-demo">
-              <div className="data-panel">
-                <div className="data-panel-header">
-                  <span className="label">Real Data</span>
-                  <span className="tag tag-real">Sensitive</span>
-                </div>
-                <div className="data-rows">
-                  <div className="data-row header">
-                    <span>Client</span><span>Account</span><span>CUSIP</span><span>Value</span>
-                  </div>
-                  {realRows.map((row, i) => (
-                    <div className="data-row" key={i}>
-                      <span className="sensitive">{row[0]}</span>
-                      <span className="sensitive">{row[1]}</span>
-                      <span className="sensitive">{row[2]}</span>
-                      <span>{row[3]}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="transform-arrow">
-                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M8 24h28M28 16l8 8-8 8" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  <circle cx="24" cy="24" r="22" stroke="currentColor" strokeWidth="1" opacity="0.3"/>
-                </svg>
-                <span>CTGAN</span>
-              </div>
-
-              <div className="data-panel">
-                <div className="data-panel-header">
-                  <span className="label">Synthetic Data</span>
-                  <span className="tag tag-synth">Safe</span>
-                </div>
-                <div className="data-rows">
-                  <div className="data-row header">
-                    <span>Client</span><span>Account</span><span>CUSIP</span><span>Value</span>
-                  </div>
-                  {synthRows.map((row, i) => (
-                    <div className="data-row" key={i}>
-                      <span className="safe">{row[0]}</span>
-                      <span className="safe">{row[1]}</span>
-                      <span className="safe">{row[2]}</span>
-                      <span>{row[3]}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
             </div>
           </div>
         </section>
